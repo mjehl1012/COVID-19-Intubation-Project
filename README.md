@@ -25,9 +25,9 @@ Continuous features include:
 * Age
 
 Future work may include more continuous features such as:
-* *Median income of city of residence
-* *Average temperature for two weeks prior to symptom start date
-* *Number of days between symptom start date and test date
+* *Median income of city of residence*
+* *Average temperature for two weeks prior to symptom start date*
+* *Number of days between symptom start date and test date*
 
 
 **Data Used**\
