@@ -4,7 +4,7 @@ Classification model to predict whether someone needs a ventilator using patient
 **Description**\
 Given all of the patient-level data, I decided to focus on classifying Intubation because understanding the underlying conditions of patients who were intubated and survived COVID-19 can help healthcare workers identify who is most likely to need and benefit from a ventilator.
 
-**Features and Target Variables**\
+**Features and Target**\
 The target variable is intubation status, a binary variable for whether someone will need a ventilator or not. Categorical features include:
 * Gender
 * Age
