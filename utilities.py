@@ -3,11 +3,33 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import KFold
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, roc_auc_score
 
+def make_confusion_matrix(model, threshold=0.5):
+    """
+    Predict Intubated if probability of being Intubated is greater than threshold.
+    :param model:
+    :return: classification report and confusion matrix
+    """
+    y_predict = (model.predict_proba(X_test)[:, 1] >= threshold)
+    patients_confusion = confusion_matrix(label_test, y_predict)
+    plt.figure(dpi=80)
+    sns.heatmap(patients_confusion, cmap=plt.cm.Blues, annot=True, square=True, fmt='d',
+           xticklabels=['Not Intubated', 'Intubated'],
+           yticklabels=['Not Intubated', 'Intubated']);
+    plt.xlabel('prediction')
+    plt.ylabel('actual')
+    
+    # print classification report 
+    target_names = ['Not Intubated', 'Intubated']
+    print(classification_report(label_test, y_predict, target_names=target_names))
 
+    
 def fit_and_cross_validate_score_model(estimator, X, y, threshold=0.5):
     """
     Cross validates and calculates the following average validation scores on the model: Accuracy, ROC AUC, Precision,
@@ -152,24 +174,3 @@ def fit_and_cross_validate_score_roc_auc_xgboost(xgb_model, X, y):
         'ROC AUC (Train)':  np.mean(auc_train),
         'ROC AUC (Val)': np.mean(auc_val),
     }
-
-
-def plot_distribution_pair(d1, d2, d1_label, d2_label, tick_min, tick_max, tick_interval, n_bins):
-    """
-    Overlays 2 distributions in the same units.
-    :param list d1: Numpy array or list containing the first distribution.
-    :param list d2: Numpy array or list containing the second distribution.
-    :param str d1_label: Legend label for the first distribution.
-    :param str d2_label: Legend label for the second distribution.
-    :param int tick_min: Value of the lowest tick on the x axis.
-    :param int tick_max: Value of the highest tick on the x axis.
-    :param int tick_interval: Interval of ticks on x axis.
-    :param int n_bins: Number of bins to break the distribution into for plotting purposes.
-    """
-    # plot distributions
-    sns.distplot(d1, bins=n_bins)
-    d = sns.distplot(d2, bins=n_bins)
-
-    # format plot
-    d.set_xticks(range(tick_min, tick_max, tick_interval))
-    plt.legend([d1_label, d2_label])
